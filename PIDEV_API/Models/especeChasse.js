@@ -7,6 +7,7 @@ var especeChasse=new schema({
     nom:String,
     description:String,
     photo:String,
+    localisation:[{ type: Schema.Types.ObjectId, ref: 'Localisation' }],
 
 })
 

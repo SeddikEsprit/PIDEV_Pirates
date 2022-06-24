@@ -25,6 +25,7 @@ router.post('/', async (req, res) => {
         nom:req.body.nom,
         description:req.body.description,
         photo:req.body.photo,
+        localisation:req.body.localisation,
     })
     try {
         const newEspecesChasse = await especesChasse.save()
@@ -45,6 +46,9 @@ router.patch('/:id', getEspecesChasse, async (req, res) => {
     }
     if (req.body.photo != null) {
         res.especesChasse.photo = req.body.photo
+    }
+    if (req.body.localisation != null) {
+        res.especesChasse.localisation = req.body.localisation
     }
     try {
         let especesChasse = await res.especesChasse.save()
