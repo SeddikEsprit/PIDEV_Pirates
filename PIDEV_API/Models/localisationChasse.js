@@ -5,6 +5,7 @@ const {Schema} = require("mongoose");
 
 
 var localisationChasse=new schema({
+    _id: Schema.Types.ObjectId,
     longitude:Number,
     latitude:Number,
     nom:String,
