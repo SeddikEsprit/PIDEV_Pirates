@@ -13,14 +13,21 @@ router.get('/', async (req, res) => {
         res.status(500).json({ message: err.message })
     }
 })
+// router.get('/:id', (req, res, next) => {
+//     console.log(req.params.id)
+//     ChienChasse.findById({_id:req.params.id},(err,result)=>{
+//         if (err)throw err
+//         res.json(result)
+//     })
+// })
 
-// Getting One
+//Getting One
 router.get('/:id', getChienChasse, (req, res) => {
     res.json(res.chienChasse)
 })
 
 // Creating one
-router.post('/', async (req, res) => {
+router.post('/add', async (req, res) => {
     var chienChasse = new ChienChasse({
         nom:req.body.nom,
         description:req.body.description,
@@ -73,7 +80,7 @@ router.delete('/:id', getChienChasse, async (req, res) => {
 async function getChienChasse(req, res, next) {
     let chienChasse
     try {
-        chienChasse = await ChienChasse.findById(req.params.id)
+        chienChasse = await ChienChasse.findById({_id:req.params.id})
         if (chienChasse == null) {
             return res.status(404).json({ message: 'Cannot find Chien de Chasse' })
         }
