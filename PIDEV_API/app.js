@@ -16,6 +16,7 @@ var commentaireRouter = require('./routes/commentaire');
 var especeChasseRouter = require('./routes/especeChasse');
 var localisationChasseRouter = require('./routes/localisationChasse');
 var trucAstuceChasseRouter = require('./routes/trucAstuceChasse');
+var localisationEspeceRouter = require('./routes/localisation-especes');
 
 var app = express();
 
@@ -34,5 +35,6 @@ app.use('/commentaire',commentaireRouter)
 app.use('/especeChasse',especeChasseRouter)
 app.use('/localisationChasse',localisationChasseRouter)
 app.use('/trucAstuceChasse',trucAstuceChasseRouter)
+app.use('/localisationEspece',localisationEspeceRouter)
 
 module.exports = app;

@@ -22,10 +22,9 @@ router.get('/:id', getEspecesChasse, (req, res) => {
 // Creating one
 router.post('/', async (req, res) => {
     var especesChasse = new EspecesChasse({
-        nom:req.body.nom,
-        description:req.body.description,
+        nomEspece:req.body.nomEspece,
+        descriptionEspece:req.body.descriptionEspece,
         photo:req.body.photo,
-        localisation:req.body.localisation,
     })
     try {
         const newEspecesChasse = await especesChasse.save()
@@ -38,18 +37,16 @@ router.post('/', async (req, res) => {
 // Updating One
 router.patch('/:id', getEspecesChasse, async (req, res) => {
 
-    if (req.body.nom != null) {
-        res.especesChasse.nom = req.body.nom
+    if (req.body.nomEspece != null) {
+        res.especesChasse.nomEspece = req.body.nomEspece
     }
-    if (req.body.description != null) {
-        res.especesChasse.description = req.body.description
+    if (req.body.descriptionEspece != null) {
+        res.especesChasse.descriptionEspece = req.body.descriptionEspece
     }
     if (req.body.photo != null) {
         res.especesChasse.photo = req.body.photo
     }
-    if (req.body.localisation != null) {
-        res.especesChasse.localisation = req.body.localisation
-    }
+
     try {
         let especesChasse = await res.especesChasse.save()
         res.json(especesChasse)

@@ -1,18 +1,21 @@
 var mongoose=require('mongoose')
+
+var {Schema} = require("mongoose");
+
+
+var EspecesChasse = require("../Models/especeChasse");
+var EspeceLocalisation = require("../Models/localisation-especes");
+
+
+
 var schema=mongoose.Schema
-var EspeceChasse=require('./especeChasse')
-const {Schema} = require("mongoose");
-
-
-var localisationChasse=new schema({
-    _id: Schema.Types.ObjectId,
-    longitude:Number,
-    latitude:Number,
+var LocalisationChasse=new schema({
+    longitude:String,
+    latitude:String,
     nom:String,
     description:String,
-    especes:[{ type: Schema.Types.ObjectId, ref: 'EspeceChasse' }]
 
 })
 
-var LocalisationChasse=mongoose.model('localisationChasse',localisationChasse)
+var LocalisationChasse=mongoose.model('localisationChasse',LocalisationChasse)
 module.exports=LocalisationChasse

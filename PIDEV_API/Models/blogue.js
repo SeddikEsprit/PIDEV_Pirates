@@ -7,12 +7,8 @@ const {Schema} = require("mongoose");
 var blogue=new schema({
     title:String,
     date_publication:String,
-    nom:String,
     message:String,
-    photo:[{
-        title:String,
-        url:String
-    }],
+    photo:String,
     commentaires:[{ type: Schema.Types.ObjectId, ref: 'Commentaire' }]
 
 })

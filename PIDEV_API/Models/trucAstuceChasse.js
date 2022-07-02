@@ -4,11 +4,7 @@ var schema=mongoose.Schema
 var trucAstuceChasse=new schema({
     title:String,
     description:String,
-    photo:[{
-        title:String,
-        description:String,
-        url:String
-    }]
+    photo:String
 
 })
 

@@ -13,13 +13,6 @@ router.get('/', async (req, res) => {
         res.status(500).json({ message: err.message })
     }
 })
-// router.get('/:id', (req, res, next) => {
-//     console.log(req.params.id)
-//     ChienChasse.findById({_id:req.params.id},(err,result)=>{
-//         if (err)throw err
-//         res.json(result)
-//     })
-// })
 
 //Getting One
 router.get('/:id', getChienChasse, (req, res) => {
@@ -70,10 +63,6 @@ router.delete('/:id', getChienChasse, async (req, res) => {
         res.status(500).json({ message: err.message })
     }
 })
-
-
-
-
 
 
 
