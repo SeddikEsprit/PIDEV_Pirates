@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var LocalisationChasse=require('../Models/localisationChasse')
 const EspecesChasse = require("../Models/especeChasse");
-
+const {getDistance,convertDistance} = require("geolib");
 
 
 // Getting all
@@ -70,11 +70,26 @@ router.delete('/:id', getLocalisationChasse, async (req, res) => {
         res.status(500).json({ message: err.message })
     }
 })
+router.get('/:lng/:lat', async (req, res) => {
+const cordonee={latitude:req.params.lat,longitude:req.params.lng}
+    const distances=[]
+    try {
+        var localisationChasse = await LocalisationChasse.find()
 
+        for (i of localisationChasse){
+            let lcalisationCordonee={latitude:i.latitude,longitude:i.longitude}
+            let distance=convertDistance(getDistance(cordonee,lcalisationCordonee,1000),'km')
+            distances.push({distance,i})
+            distances.sort((a,b)=>{
+                return a.distance-b.distance
+            })
+        }
 
-
-
-
+        res.json(distances)
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
+})
 
 
 async function getLocalisationChasse(req, res, next) {
@@ -91,4 +106,5 @@ async function getLocalisationChasse(req, res, next) {
     res.localisationChasse = localisationChasse
     next()
 }
+
 module.exports = router;
