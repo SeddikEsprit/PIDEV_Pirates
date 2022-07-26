@@ -32,6 +32,15 @@ router.get('/localisation/:especeChasse', async function(req, res, next) {
     res.json(await EspeceLocalisation.find({especeChasse:req.params.especeChasse}).populate("especeChasse").populate("localisationChasse"))
 
 });
+router.get('/chart',async function(req,res,next){
+    var localisation=await LocalisationChasse.find()
+    var numberEspece=[]
+    for (i of localisation){
+      //  console.log(espece.countDocuments())
+        numberEspece.push(await EspeceLocalisation.find({localisationChasse:i._id}).populate("localisationChasse").populate("especeChasse").countDocuments())
+    }
+    res.json({localisation,numberEspece})
+})
 
 // router.post('/addLocalisation/:especeChasse/:localisationChasse',async (req,res)=>{
 //

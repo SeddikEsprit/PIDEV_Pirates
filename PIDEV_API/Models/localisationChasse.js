@@ -10,10 +10,23 @@ var EspeceLocalisation = require("../Models/localisation-especes");
 
 var schema=mongoose.Schema
 var LocalisationChasse=new schema({
-    longitude:String,
-    latitude:String,
-    nom:String,
+    longitude: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    latitude:{
+        type: String,
+        required: true,
+        unique: true,
+    },
+    nom:{
+        type: String,
+        required: true,
+        unique: true,
+    },
     description:String,
+    photo:String,
 
 })
 

@@ -1,18 +1,57 @@
 var express = require('express');
 var router = express.Router();
 var EspecesChasse = require("../Models/especeChasse");
+const ChienChasse = require("../Models/chienChasse");
 
 
 
 // Getting all
-router.get('/', async (req, res) => {
+router.get('/all',async (req, res) => {
     try {
         var especesChasse = await EspecesChasse.find()
         res.json(especesChasse)
     } catch (err) {
         res.status(500).json({ message: err.message })
     }
+
+
 })
+
+// Getting all par page
+router.get('/', paginatedResults(EspecesChasse),async (req, res) => {
+    // try {
+    //     var especesChasse = await EspecesChasse.find()
+    //     res.json(especesChasse)
+    // } catch (err) {
+    //     res.status(500).json({ message: err.message })
+    // }
+
+    res.json(res.paginatedResults)
+})
+
+function paginatedResults(model) {
+    return async (req, res, next) => {
+        const page = parseInt(req.query.page)
+        const limit = parseInt(req.query.limit)
+
+        const startIndex = (page - 1) * limit
+        // const endIndex = page * limit
+
+        const paginatedResults = []
+
+
+        try {
+            const total= await model.find().countDocuments()
+            console.log(total)
+            results = await model.find().limit(limit).skip(startIndex).exec()
+            paginatedResults.push({results,total})
+            res.paginatedResults = paginatedResults
+            next()
+        } catch (e) {
+            res.status(500).json({ message: e.message })
+        }
+    }
+}
 
 // Getting One
 router.get('/:id', getEspecesChasse, (req, res) => {

@@ -7,7 +7,12 @@ var mongoose=require('mongoose')
 mongoose.connect('mongodb://localhost:27017/PIDEV_API_db',()=>{
     console.log('connected to database')
 })
+// med route
 
+var usersRouter = require('./routes/users');
+var authRoute = require('./routes/auth.route');
+var profileRoute = require('./routes/profile.route');
+// med route
 
 var indexRouter = require('./routes/index');
 var blogueRouter = require('./routes/blogues');
@@ -29,6 +34,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors())
 
 app.use('/', indexRouter);
+app.use('/auth',authRoute);
+app.use('/profile',profileRoute);
+app.use('/users', usersRouter);
 app.use('/blogues',blogueRouter)
 app.use('/chienChasse',chienChasseRouter)
 app.use('/commentaire',commentaireRouter)

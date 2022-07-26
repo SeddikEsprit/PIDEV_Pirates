@@ -6,14 +6,51 @@ const {getDistance,convertDistance} = require("geolib");
 
 
 // Getting all
-router.get('/', async (req, res) => {
+router.get('/all' ,async (req, res) => {
     try {
         var localisationChasse = await LocalisationChasse.find()
         res.json(localisationChasse)
     } catch (err) {
         res.status(500).json({ message: err.message })
     }
+
+
 })
+// Getting all par page
+router.get('/', paginatedResults(LocalisationChasse) ,async (req, res) => {
+    // try {
+    //     var localisationChasse = await LocalisationChasse.find()
+    //     res.json(localisationChasse)
+    // } catch (err) {
+    //     res.status(500).json({ message: err.message })
+    // }
+
+    res.json(res.paginatedResults)
+})
+
+function paginatedResults(model) {
+    return async (req, res, next) => {
+        const page = parseInt(req.query.page)
+        const limit = parseInt(req.query.limit)
+
+        const startIndex = (page - 1) * limit
+        // const endIndex = page * limit
+
+        const paginatedResults = []
+
+
+        try {
+            const total= await model.find().countDocuments()
+            console.log(total)
+            results = await model.find().limit(limit).skip(startIndex).exec()
+            paginatedResults.push({results,total})
+            res.paginatedResults = paginatedResults
+            next()
+        } catch (e) {
+            res.status(500).json({ message: e.message })
+        }
+    }
+}
 
 // Getting One
 router.get('/:id', getLocalisationChasse, (req, res) => {
@@ -27,6 +64,7 @@ router.post('/', async (req, res) => {
         latitude:req.body.latitude,
         nom:req.body.nom,
         description:req.body.description,
+        photo:req.body.photo,
     })
     try {
         const newLocalisationChasse = await localisationChasse.save()
@@ -50,9 +88,9 @@ router.patch('/:id', getLocalisationChasse, async (req, res) => {
     if (req.body.description != null) {
         res.localisationChasse.description = req.body.description
     }
-    // if (req.body.especes != null) {
-    //     res.localisationChasee.especes = req.body.especes
-    // }
+    if (req.body.photo != null) {
+        res.localisationChasee.photo = req.body.photo
+    }
     try {
         let localisationChasse = await res.localisationChasse.save()
         res.json(localisationChasse)

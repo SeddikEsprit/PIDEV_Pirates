@@ -5,7 +5,10 @@ const {Schema} = require("mongoose");
 
 
 var blogue=new schema({
-    title:String,
+    title:{
+        type: String,
+        required: true,
+    },
     date_publication:String,
     message:String,
     photo:String,

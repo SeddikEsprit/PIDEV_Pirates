@@ -7,7 +7,11 @@ var EspeceLocalisation = require("../Models/localisation-especes");
 
 
 var EspeceChasse=new schema({
-    nomEspece:String,
+    nomEspece:{
+        type: String,
+        required: true,
+        unique: true,
+    },
     descriptionEspece:String,
     photo:String,
 })
