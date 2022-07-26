@@ -5,21 +5,38 @@ var ChienChasse = require("../Models/chienChasse");
 
 
 // Getting all
-router.get('/', async (req, res) => {
-    try {
-        var chienChasse = await ChienChasse.find()
-        res.json(chienChasse)
-    } catch (err) {
-        res.status(500).json({ message: err.message })
-    }
+router.get('/', paginatedResults(ChienChasse), (req, res) => {
+    // try {
+    //     var chienChasse = await ChienChasse.find()
+    //     res.json(chienChasse)
+    // } catch (err) {
+    //     res.status(500).json({ message: err.message })
+    // }
+    res.json(res.paginatedResults)
 })
-// router.get('/:id', (req, res, next) => {
-//     console.log(req.params.id)
-//     ChienChasse.findById({_id:req.params.id},(err,result)=>{
-//         if (err)throw err
-//         res.json(result)
-//     })
-// })
+function paginatedResults(model) {
+    return async (req, res, next) => {
+        const page = parseInt(req.query.page)
+        const limit = parseInt(req.query.limit)
+
+        const startIndex = (page - 1) * limit
+        // const endIndex = page * limit
+
+        const paginatedResults = []
+
+
+        try {
+            const total= await model.find().countDocuments()
+            console.log(total)
+            results = await model.find().limit(limit).skip(startIndex).exec()
+            paginatedResults.push({results,total})
+            res.paginatedResults = paginatedResults
+            next()
+        } catch (e) {
+            res.status(500).json({ message: e.message })
+        }
+    }
+}
 
 //Getting One
 router.get('/:id', getChienChasse, (req, res) => {
@@ -73,10 +90,6 @@ router.delete('/:id', getChienChasse, async (req, res) => {
 
 
 
-
-
-
-
 async function getChienChasse(req, res, next) {
     let chienChasse
     try {
@@ -91,4 +104,5 @@ async function getChienChasse(req, res, next) {
     res.chienChasse = chienChasse
     next()
 }
+
 module.exports = router;

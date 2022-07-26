@@ -2,13 +2,13 @@ var mongoose=require('mongoose')
 var schema=mongoose.Schema
 
 var trucAstuceChasse=new schema({
-    title:String,
+    title:{
+        type: String,
+        required: true,
+        unique: true,
+    },
     description:String,
-    photo:[{
-        title:String,
-        description:String,
-        url:String
-    }]
+    photo:String
 
 })
 
